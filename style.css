@@ -1,0 +1,102 @@
+:root {
+  /* Peaceful, calming palette: sage, misty blue, and warm neutrals */
+  --felt: #f3f5f1;
+  --shadow: #aab7ad;
+  --ink: #26332d;
+  --colour1: #dce9e2;
+  --colour2: #dce8f2;
+  --buttoncolour: #c6d9ce;
+  --ivory: #26332d;
+  --flip-time: 0.6s;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--felt);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+  min-height: 100dvh;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* ---- Button ---- */
+button {
+  width: 100%;
+  min-height: 3.5rem;
+  font: 700 1.15rem system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--buttoncolour);
+  border: 2px solid #7f9688;
+  border-radius: 14px;
+  box-shadow: 0 5px 0 var(--shadow);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+button:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--shadow); }
+button:disabled { opacity: 0.5; cursor: default; }
+button:focus-visible { outline: 3px solid #7d9eaf; outline-offset: 3px; }
+
+/* ---- Flip card ---- */
+.scene { perspective: 1200px; }
+
+.card {
+  position: relative;
+  height: 18rem;
+  transform-style: preserve-3d;
+  transition: transform var(--flip-time) cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.card.flipped { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  overflow: auto;
+  text-align: center;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  font-size: clamp(1.3rem, 5.5vw, 1.7rem);
+  line-height: 1.4;
+  color: var(--ink);
+  background: var(--colour1);
+  border: 2px solid #879d90;
+  border-radius: 18px;
+  box-shadow: 0 8px 0 var(--shadow);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.face.back { background: var(--colour2); transform: rotateY(180deg); }
+
+/* No question yet: show an empty card slot. */
+.face:empty {
+  background: transparent;
+  border: 2px dashed #b9c5bc;
+  box-shadow: none;
+}
+
+#message { margin: 0; text-align: center; color: var(--ink); }
+#message:empty { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --flip-time: 0.01s; }
+}
